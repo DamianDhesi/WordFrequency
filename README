@@ -4,7 +4,7 @@ This is program is designed to take in one or more files as input and return a s
 the most frequent words. Words are sorted in descending order of frequency and in reverse 
 alphabetical order if there is a tie in frequency. The program can take an optional argument of 
 -n <num> to specify how many words to output. If the -n argument is not given then the top 10 
-most frequency words will be printed out by default. 
+most frequent words will be printed out by default. 
 
 Usage: fw [-n num] [ file1 [ file 2 ...] ]
 
