@@ -6,6 +6,12 @@ alphabetical order if there is a tie in frequency. The program can take an optio
 -n <num> to specify how many words to output. If the -n argument is not given then the top 10 
 most frequent words will be printed out by default. 
 
+A hashtable implementation was used to store the words as they were read. This allows the 
+frequency of each word to be increased fairy quickly if it appears again in the input.
+The hashtable uses seperate chaining to resolve collisions. In addition, the hashtable will 
+double it's size in order to maitain fast look up so that it does not devolve into simply
+being a glorified linked list. 
+
 Usage: fw [-n num] [ file1 [ file 2 ...] ]
 
 Sample Runs:
