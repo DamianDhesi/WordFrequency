@@ -17,7 +17,7 @@ The Makefile will complie the program utilizing the command "make fw" or "make a
 
 Usage: fw [-n num] [ file1 [ file 2 ...] ]
 
-Sample Runs:
+Sample Runs (In Ubuntu):
 
 $ ./fw war_and_peace.txt
 The top 10 words (out of 22938) are:
