@@ -20,8 +20,7 @@ int Hash(char *str, HashPtr hash_table){
 
 /*Adds a word to the HashTable or increments its frequency if it is already
  *present. Returns 0 if run succesfully and non-zero if an error occurs*/
-/*Error addressed in main function*/
-int add(char *str, HashPtr hash_table){
+void add(char *str, HashPtr hash_table){
 
 	/*index is the index on the Hashtable of the word to be added using
  	 *the hash function*/
@@ -30,7 +29,6 @@ int add(char *str, HashPtr hash_table){
 	/*EndPtr is used to point to the last element of the linked list at an
  	 *indice of a HashTable*/ 
 	int index, i;
-	int error = 0;
 	WordPtr ptr = NULL;
 	WordPtr EndPtr = NULL;
 
@@ -45,7 +43,9 @@ int add(char *str, HashPtr hash_table){
 				hash_table->table[i] = NULL;
 			}
 		}else{
-			return 1;
+            /*Return an erro is unsuccesful in getting memory space*/
+            perror("malloc");
+			exit(EXIT_FAILURE);
 		}
 	}
 
@@ -63,7 +63,7 @@ int add(char *str, HashPtr hash_table){
 				ptr->freq++;
 				/*free str if it is already in the table*/
 				free(str); 
-				return 0;
+				return;
 			}
 
 			/*Set the end pointer to the second to last pointer in
@@ -74,8 +74,8 @@ int add(char *str, HashPtr hash_table){
 		}
 	
 		/*Attempt to add the word to be added, str, to the end of the
- 		 *list and increment size. Return a non-zero value if
-		 *unsuccessful*/
+ 		 *list and increment size. Return an error message 
+         *if unsuccessful*/
 		EndPtr->nxt = (WordPtr) malloc(sizeof(WordLink));
 		if(EndPtr->nxt){
 			EndPtr->nxt->word = str;
@@ -83,7 +83,8 @@ int add(char *str, HashPtr hash_table){
 			EndPtr->nxt->nxt = NULL;
 			hash_table->size++;
 		} else{
-			return 1;
+			perror("malloc");
+            exit(EXIT_FAILURE);
 		}		
 	} else{
 		/*Since this index was empty place the word, str, here and
@@ -95,7 +96,8 @@ int add(char *str, HashPtr hash_table){
 			hash_table->table[index]->nxt = NULL;
 			hash_table->size++;
 		} else{
-			return 1;
+			perror("malloc");
+            exit(EXIT_FAILURE);
 		}
 	}
 	
@@ -103,21 +105,15 @@ int add(char *str, HashPtr hash_table){
  	 *to stay below 1. Increase the hash table capacity if
 	 *load factor = 1*/
 	if(LoadFactor(hash_table) == 1){
-
-		/*return an error of attempt to increase capacity fails*/
-		if((error = UpCapacity(hash_table)) != 0){
-			return 1;
-		}
+        /*Attempt to increase the table capacity*/
+        UpCapacity(hash_table);
 	}
 
-	/*return 0 to show that the function was successful*/
-	return 0;
 }
 
 /*Increase the capacity of the HashTable. Non-zero value returned if an error
  *occurs*/
-/*Errors addressed in main function*/
-int UpCapacity(HashPtr PrevTable){
+void UpCapacity(HashPtr PrevTable){
 
 	/*i is used in the for-loop*/
 	/*ptr is used to loop through the linked lists in the hash table*/
@@ -154,10 +150,10 @@ int UpCapacity(HashPtr PrevTable){
 				/*Calculate a new index and attempt to allocate
  				 *space for a new WordPtr*/ 
 				index = Hash(ptr->word, &NewTable);
-				if((NewPtr =
-				   (WordPtr) malloc(sizeof(WordLink)))
-				    == NULL){
-					return 1;
+				if((NewPtr = (WordPtr) malloc(sizeof(WordLink)))
+                     		    == NULL){
+					perror("malloc");
+                    			exit(EXIT_FAILURE);
 				}
 				
 				/*Set the NewPtr equal to the contents of the
@@ -199,11 +195,11 @@ int UpCapacity(HashPtr PrevTable){
 		free(PrevTable->table);
 		*PrevTable = NewTable;		
 	} else{
-		return 1;
+		/*Unable to get memory space for the new hash table*/
+        perror("malloc");
+        exit(EXIT_FAILURE);
 	}
 	
-	/*Exit the function sucessfully*/
-	return 0;
 }
 
 /*Returns the load factor of the HashTable*/
