@@ -35,9 +35,9 @@ typedef struct DataTable *HashPtr;
  *at implementation*/
 int Hash(char *str, HashPtr hash_table);
 
-int add(char *str, HashPtr hash_table);
+void add(char *str, HashPtr hash_table);
 
-int UpCapacity(HashPtr PrevTable);
+void UpCapacity(HashPtr PrevTable);
 
 int LoadFactor(HashPtr hash_table);
 
