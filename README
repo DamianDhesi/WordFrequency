@@ -1,10 +1,57 @@
-Damian Dhesi (ddhesi)
+By Damian Dhesi
 
-Line 153 in main.c is which is the error message for when a file/dir does not
-exist is commented out. When running ~pn-cs357/demos/fw the demo fw prints out
-the error message but the missing file cases for ~pn-cs357/demos/tryAsgn2 do 
-not. Hence I am confused on what the output should be so the line can be 
-uncommented if the missing file cases for ~pn-cs357/demos/tryAsgn2 are 
-incorrect. Discrepency between demos/fw and demos/tryAsgn2 as of 4/15.
+This is program is designed to take in one or more files as input and return a sorted list of 
+the most frequent words. Words are sorted in descending order of frequency and in reverse 
+alphabetical order if there is a tie in frequency. The program can take an optional argument of 
+-n <num> to specify how many words to output. If the -n argument is not given then the top 10 
+most frequency words will be printed out by default. 
 
-No further grading info.
+Usage: fw [-n num] [ file1 [ file 2 ...] ]
+
+Sample Runs:
+
+$ ./fw war_and_peace.txt
+The top 10 words (out of 22938) are:
+    34825 the
+    22686 and
+    16871 to
+    15096 of
+    10663 a
+    10081 he
+     9364 in
+     8187 that
+     8097 his
+     7367 was
+$ ./fw
+input via standard input
+The top 10 words (out of 4) are:
+        2 input
+        1 via
+        1 standard
+$ ./fw DoesNotExist
+DoesNotExist: No such file or directory
+The top 10 words (out of 0) are:
+$ ./fw -n ARealNumber
+usage: fw [-n num] [ file1 [ file 2 ...] ]
+$ ./fw FakeFile main.c
+FakeFile: No such file or directory
+The top 10 words (out of 208) are:
+       36 the
+       32 to
+       32 if
+       25 file
+       23 word
+       21 n
+       20 i
+       16 is
+       14 a
+       12 words
+$ chmod u-r test
+$ ./fw test
+test: Permission denied
+The top 10 words (out of 0) are:
+$ ./fw -n 2 war_and_peace.txt
+The top 2 words (out of 22938) are:
+    34825 the
+    22686 and
+$
