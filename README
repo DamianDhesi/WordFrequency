@@ -12,6 +12,9 @@ The hashtable uses seperate chaining to resolve collisions. In addition, the has
 double it's size in order to maitain fast look up so that it does not devolve into simply
 being a glorified linked list. 
 
+The Makefile will complie the program utilizing the command "make fw" or "make all". 
+"make clean" can be used to remove all object files
+
 Usage: fw [-n num] [ file1 [ file 2 ...] ]
 
 Sample Runs:
