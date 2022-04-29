@@ -1,0 +1,10 @@
+Damian Dhesi (ddhesi)
+
+Line 153 in main.c is which is the error message for when a file/dir does not
+exist is commented out. When running ~pn-cs357/demos/fw the demo fw prints out
+the error message but the missing file cases for ~pn-cs357/demos/tryAsgn2 do 
+not. Hence I am confused on what the output should be so the line can be 
+uncommented if the missing file cases for ~pn-cs357/demos/tryAsgn2 are 
+incorrect. Discrepency between demos/fw and demos/tryAsgn2 as of 4/15.
+
+No further grading info.
