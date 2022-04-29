@@ -31,7 +31,6 @@ int main(int argc, char *argv[]){
 	char *FreqWord = NULL;
 	int freq = 0;
 	char usage[] = "usage: fw [-n num] [ file1 [ file 2 ...] ]\n";
-	char NoMem[] = "No Memory Left!\n";
 	extern char *optarg;
 	extern int optind;
 
@@ -39,19 +38,22 @@ int main(int argc, char *argv[]){
  	 *the arg is a postive number or zero then save the requested number
 	 *of words to display in n*/  
 	if(getopt(argc, argv, "n:") != -1){
-
+        
 		if(optarg == NULL){
-			printf("%s", usage);
-			return 1;
+			fprintf(stderr, "%s", usage);
+			exit(EXIT_FAILURE);
 		}
-
+        
+        /*Loop through given argument to ensure that only a number is given*/
 		for(i = 0; (c = optarg[i]) != '\0'; i++){
 			if(!isdigit(c) && c != ' '){
-				printf("%s", usage);
-				return 1;
+				fprintf(stderr, "%s", usage);
+				exit(EXIT_FAILURE);
 			}
 		}
 		
+        /*Save the requested number of words to display if a valid input was
+         *given*/
 		n = atoi(optarg);
 	}
 
@@ -82,8 +84,8 @@ int main(int argc, char *argv[]){
 					if(word == NULL){
 						if((word = malloc(WordSize)) ==
 						    NULL){
-							printf("%s", NoMem);
-							return 1;
+							perror("malloc");
+							exit(EXIT_FAILURE);
 						}
 					}
 					
@@ -100,22 +102,18 @@ int main(int argc, char *argv[]){
 						if(word){
 							WordSize *= 2;
 						} else{
-							printf("%s", NoMem);
-							return 1;
+							perror("realloc");
+							exit(EXIT_FAILURE);
 						}
 					}
 
 				/*After the end of the word is reached set the
- 				 *last char in the word as null and attemp to 
+ 				 *last char in the word as null and attempt to 
 				 *add it to the hash table*/
 				} else if(WordFound){
 					word[i] = '\0';
 
-					if(add(word, &hash_table)){
-						printf("HashTable add error, %s"
-						       , NoMem);
-						return 1;
-					}
+				    add(word, &hash_table);
  
 					/*Reset WordFound, i, word, and
  					 *WordSize to prepare for the next 
@@ -133,24 +131,20 @@ int main(int argc, char *argv[]){
 				file = NULL;
 			} else {
 				if(fclose(file) != 0){
-					printf("Error closing file!\n");
-					return 1;
+					perror("fclose");
+                    exit(EXIT_FAILURE);
 				}
 			}
 
 		/*If not able to read the file then check if it was due to
  		 *not having permission. Print relevant message if so*/ 	
 		} else if(errno == EACCES){
-			printf("%s: Permission denied\n", argv[j]);
+			fprintf(stderr, "%s: Permission denied\n", argv[j]);
 
 		/*If not a permission error when opening the file then print
- 		 *that the file/dir does not exist. printf commented out to
-		 *align with fw as according to ~pn-cs357/demos/tryAsgn2 as of
-		 *4/15/22. I left the prinf here since the asgn description 
-		 *asks for it but this is contradicted by the output of 
-		 *tryAsgn2 for the missing file test cases*/ 
+ 		 *that the file/dir does not exist*/
 		} else{
-		/*	printf("%s: No such file or directory\n", argv[j]);*/
+		    fprintf(stderr, "%s: No such file or directory\n", argv[j]);
 		}	
 	}
 
@@ -163,14 +157,10 @@ int main(int argc, char *argv[]){
 		n = hash_table.size;
 	}
 
-	/*Get and display n number of unique words. Return and error if 
- 	 *PopMostFreq returns a value of 1*/ 
+	/*Get and display n number of unique words*/
 	for(i = 0; i < n; i++){
-		if((long)(FreqWord = PopMostFreq(&hash_table, &freq)) == 1){
-			printf("Hashtable Remove error!\n");
-			return 1;
-		}
 		
+        FreqWord = PopMostFreq(&hash_table, &freq);
 		printf("%9d %s\n", freq, FreqWord);	
 	}
 
