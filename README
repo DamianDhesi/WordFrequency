@@ -1,5 +1,7 @@
 By Damian Dhesi
 
+Programmed from scratch for a project in my C class.
+
 This is program is designed to take in one or more files as input and return a sorted list of 
 the most frequent words. Words are sorted in descending order of frequency and in reverse 
 alphabetical order if there is a tie in frequency. The program can take an optional argument of 
@@ -7,7 +9,7 @@ alphabetical order if there is a tie in frequency. The program can take an optio
 most frequent words will be printed out by default. 
 
 A hashtable implementation was used to store the words as they were read. This allows the 
-frequency of each word to be increased fairy quickly if it appears again in the input.
+frequency of each word to be increased fairly quickly if it appears again in the input.
 The hashtable uses seperate chaining to resolve collisions. In addition, the hashtable will 
 double it's size in order to maitain fast look up so that it does not devolve into simply
 being a glorified linked list. 
